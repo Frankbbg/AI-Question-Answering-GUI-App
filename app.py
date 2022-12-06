@@ -7,8 +7,9 @@
 
 import gui
 import openai
+import time
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 screen = gui.CTk()
 
@@ -24,6 +25,8 @@ def generateResponse(prompt, displayLabel, maxTokens=256, temperature=0.8, frequ
     '''
     if prompt != "":
         displayLabel.configure(text="AI is typing...")
+
+        time.sleep(0.5)
 
         response = openai.Completion.create(
             engine="text-davinci-003",
@@ -95,13 +98,13 @@ def mainDisplay(screen):
                 Q:"""
 
     gui.background(screen, "d32")
-    testLabel = gui.label(screen, "This is a label", 200, 200, 10)
-    entryBox = gui.textArea(100, 200, 500, 100)
+    titleLabel = gui.label(screen, "Inquisitor: The AI Question Answering App", 200, 200, 10)
+    questionBox = gui.textArea(100, 200, 500, 100)
     responseLabel = gui.label(screen, "", 100, 350, 100)
     responseLabel.configure(wraplength=500)
-    button1 = gui.button(screen, "Generate", 50, 50, 100, 50, lambda: generateResponse(f"{fewShotExample}{entryBox.textbox.get(1.0, 10.0)}\n\nA:\n", responseLabel)) #<----- get prompt from textbox
-    gui.fill(testLabel, "342")
-    gui.fill(button1, "e32")
+    responseButton = gui.button(screen, "Get a Response", 50, 50, 100, 50, lambda: generateResponse(f"{fewShotExample}{questionBox.textbox.get(1.0, 10.0)}\n\nA:\n", responseLabel)) #<----- get prompt from textbox
+    gui.fill(titleLabel, "342")
+    gui.fill(responseButton, "e32")
 
 def main():
     mainDisplay(screen)
