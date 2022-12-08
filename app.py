@@ -8,12 +8,14 @@
 import gui
 import openai
 import time
+from PIL import ImageTk, Image
 
-openai.api_key = "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"
+openai.api_key = "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"
 
-screen = gui.CTk()
+mainWindow = gui.CTk()
+mainWindow.geometry("500x500")
 
-def generateResponse(prompt, displayLabel, maxTokens=256, temperature=0.8, frequency_penalty=0.0, presence_penalty=0.0):
+def generateResponse(screen, prompt, questionBox, maxTokens=256, temperature=0.8, frequency_penalty=0.0, presence_penalty=0.0):
     '''
     Creates a respsonse using the OpenAI API and displays it to the console
 
@@ -23,8 +25,15 @@ def generateResponse(prompt, displayLabel, maxTokens=256, temperature=0.8, frequ
     :frequency_penalty: How often the AI repeats itself
     :presence_penalty: How much the AI moves to different topics
     '''
+    questionLabel = gui.label(screen, "", 12, 3, 20)
+    responseLabel = gui.label(screen, "", 12, 4, 15)
+    responseLabel.configure(wraplength=500)
+    gui.fill(questionLabel, "111")
+
     if prompt != "":
-        displayLabel.configure(text="AI is typing...")
+        responseLabel.configure(text="AI is typing...")
+        questionLabel.configure(text=questionBox.textbox.get(1.0, 10.0))
+        print(questionBox.textbox.get(1.0, 10.0))
 
         time.sleep(0.5)
 
@@ -40,7 +49,7 @@ def generateResponse(prompt, displayLabel, maxTokens=256, temperature=0.8, frequ
     else:
         response = "Ask me any question!"
 
-    displayLabel.configure(text=response)
+    responseLabel.configure(text=response)
 
 def mainDisplay(screen):
 
@@ -96,19 +105,34 @@ def mainDisplay(screen):
 
 
                 Q:"""
+    settingsIconPath = "C:\\Users\\frank\\OneDrive\\Documents\\School Documents\\Fall 2022\\Second 8 Weeks\\Intro to Sofware Development\\Final Project\\Inquisitor\\AI-Question-Answering-GUI-App\\images\\Settings_Icon.png"
+    img = ImageTk.PhotoImage(Image.open(settingsIconPath))
 
     gui.background(screen, "d32")
-    titleLabel = gui.label(screen, "Inquisitor: The AI Question Answering App", 200, 200, 10)
-    questionBox = gui.textArea(100, 200, 500, 100)
-    responseLabel = gui.label(screen, "", 100, 350, 100)
-    responseLabel.configure(wraplength=500)
-    responseButton = gui.button(screen, "Get a Response", 50, 50, 100, 50, lambda: generateResponse(f"{fewShotExample}{questionBox.textbox.get(1.0, 10.0)}\n\nA:\n", responseLabel)) #<----- get prompt from textbox
+    titleLabel = gui.label(screen, "Inquisitor: The AI Question Answering App", 12, 1, 20, "Times New Roman")
+    questionBox = gui.textArea(12, 2, 500, 100)
+    responseButton = gui.button(screen, 12, 5, 100, 50, "Get a Response", command=lambda: generateResponse(screen, f"{fewShotExample}{questionBox.textbox.get(1.0, 10.0)}\n\nA:\n", questionBox)) #<----- get prompt from textbox
+    settingsButton = gui.button(screen, 12, 6, 50, 50, image=img, command=settingsDisplay)
     gui.fill(titleLabel, "342")
     gui.fill(responseButton, "e32")
 
+def settingsDisplay():
+    '''
+    Displays the settings window for generation
+    '''
+    warningText = "Change the way the AI outputs text. Warning: This may cause the AI to write incorrect answers to your questions. Read the questions carefully"
+
+    settingsWindow = gui.window(mainWindow, "AI Settings", "500x500")
+
+    titleLabel = gui.label(settingsWindow, "AI Settings", 12, 1, 20)
+    warningLabel = gui.label(settingsWindow, warningText, 12, 2, 10)
+
+    warningLabel.configure(wraplength=400)
+
+
 def main():
-    mainDisplay(screen)
-    screen.mainloop()
+    mainDisplay(mainWindow)
+    mainWindow.mainloop()
 
 if __name__ == "__main__":
     main()

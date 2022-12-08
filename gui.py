@@ -5,7 +5,19 @@ is_on = False
 #---------------------------------------------------------------------------------------------------------------------------
 # Visuals
 
-def label(screen, text, x, y, size):
+def window(master, title="", size="600x500"):
+    '''
+    :param: Title - The name of the window
+    :param: Size - The size of the window in pixels, Example: '500x500'
+    '''
+    newWindow = CTkToplevel(master)
+
+    newWindow.title(title)
+    newWindow.geometry(size)
+
+    return newWindow
+
+def label(screen, text, x, y, size, fontFamily='Arial'):
     '''
     Create display text on the screen
 
@@ -15,14 +27,15 @@ def label(screen, text, x, y, size):
     :param: size - The size of the label
     '''
     userLabel = CTkLabel(screen, text=text)
-    userLabel.place(x=x, y=y)
-    userLabel.pack()
+    # userLabel.place(x=x, y=y)
+    userLabel.grid(column=x, row=y)
+    # userLabel.pack()
 
-    textSize(userLabel, size)
+    textSize(userLabel, size, fontFamily)
 
     return userLabel
 
-def button(screen, text, x, y, width, height, command=None):
+def button(screen, x, y, width, height, text="", image=None, command=None):
     '''
     Creates a GUI button on the screen for the user to interact with.
 
@@ -33,9 +46,16 @@ def button(screen, text, x, y, width, height, command=None):
     :param: height - how tall the button is
     :param: command - What function to run when the button is clicked (optional)
     '''
-    userButton = CTkButton(screen, text=text, width=width, height=height, command=command)
-    userButton.place(x=x, y=y)
-    userButton.pack()
+    if image == None:
+        userButton = CTkButton(screen, text=text, width=width, height=height, command=command)
+        # userButton.place(x=x, y=y)
+        userButton.grid(column=x, row=y)
+        # userButton.pack()
+    else:
+        userButton = CTkButton(screen, text=text, image=image, width=width, height=height, command=command)
+        # userButton.place(x=x, y=y)
+        userButton.grid(column=x, row=y)
+        # userButton.pack()
 
     return userButton
 
@@ -49,8 +69,9 @@ def textArea(x, y, width, height):
     :param: height - The height of the text area
     '''
     textBox = CTkTextbox(width=width, height=height)
-    textBox.place(x=x, y=y)
-    textBox.pack()
+    # textBox.place(x=x, y=y)
+    textBox.grid(column=x, row=y)
+    # textBox.pack()
 
     return textBox
 
@@ -78,17 +99,14 @@ def fill(object, color):
     elif isinstance(object, CTkButton):
         object.configure(bg_color=f'#{color}')
 
-def textSize(label, size):
+def textSize(label, size, fontFamily='Arial'):
     '''
     Changes the size of the given label text
 
     :param: label - The label to change the size of
     :param: size - The new size of the label
     '''
-    multiplier = 1 + (size / 10)
-
-    label['width'] *= multiplier
-    label['height'] *= multiplier
+    label.configure(font=(fontFamily, size))
 
 #---------------------------------------------------------------------------------------------------------------------------
 # Utilities
