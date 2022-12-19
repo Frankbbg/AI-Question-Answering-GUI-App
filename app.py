@@ -13,7 +13,7 @@ import openai
 import time
 from PIL import ImageTk, Image
 
-openai.api_key = "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" #OpenAI API Key to generate text
+openai.api_key = "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" #OpenAI API Key to generate text
 
 # initialize the main window and set the size
 mainWindow = gui.CTk()
