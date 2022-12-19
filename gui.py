@@ -1,7 +1,5 @@
 from customtkinter import *
 
-is_on = False
-
 #---------------------------------------------------------------------------------------------------------------------------
 # Visuals
 
@@ -17,7 +15,7 @@ def window(master, title="", size="600x500"):
 
     return newWindow
 
-def label(screen, text, x, y, size, fontFamily='Arial'):
+def label(screen, text, x, y, size, fontFamily='Arial', positionType = 'place'):
     '''
     Create display text on the screen
 
@@ -25,11 +23,16 @@ def label(screen, text, x, y, size, fontFamily='Arial'):
     :param: x - The x position of the text in pixels
     :param: y - the y position of the text in pixels
     :param: size - The size of the label
+    :param: fontFamily - the font of the text
+    :param: positionType - the method that the text is positioned on the screen
     '''
     userLabel = CTkLabel(screen, text=text)
-    # userLabel.place(x=x, y=y)
-    userLabel.grid(column=x, row=y)
-    # userLabel.pack()
+    if positionType == 'place':
+        userLabel.place(x=x, y=y)
+    elif positionType == 'grid':
+        userLabel.grid(column=x, row=y)
+    elif positionType == 'pack':
+        userLabel.pack()
 
     textSize(userLabel, size, fontFamily)
 
@@ -48,13 +51,13 @@ def button(screen, x, y, width, height, text="", image=None, command=None):
     '''
     if image == None:
         userButton = CTkButton(screen, text=text, width=width, height=height, command=command)
-        # userButton.place(x=x, y=y)
-        userButton.grid(column=x, row=y)
+        userButton.place(x=x, y=y)
+        # userButton.grid(column=x, row=y)
         # userButton.pack()
     else:
         userButton = CTkButton(screen, text=text, image=image, width=width, height=height, command=command)
-        # userButton.place(x=x, y=y)
-        userButton.grid(column=x, row=y)
+        userButton.place(x=x, y=y)
+        # userButton.grid(column=x, row=y)
         # userButton.pack()
 
     return userButton
@@ -69,11 +72,18 @@ def textArea(x, y, width, height):
     :param: height - The height of the text area
     '''
     textBox = CTkTextbox(width=width, height=height)
-    # textBox.place(x=x, y=y)
-    textBox.grid(column=x, row=y)
+    textBox.place(x=x, y=y)
+    # textBox.grid(column=x, row=y)
     # textBox.pack()
 
     return textBox
+
+def slidebar(screen, x, y, highValue, variable, lowValue=0, step=0.0, default_value=0.0, command=None):
+    userSlideBar = CTkSlider(screen, from_=lowValue, to=highValue, number_of_steps=step, command=command, variable=variable)
+    userSlideBar.set(default_value)
+    userSlideBar.place(x=x, y=y)
+
+    return userSlideBar
 
 #---------------------------------------------------------------------------------------------------------------------------
 # Colors and Sizes
