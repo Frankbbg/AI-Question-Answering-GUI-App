@@ -50,3 +50,11 @@ The AI will not answer the question if:
 2. Open the file `app.py`
 3. Go to line 16
 4. Replace the API Key with your own
+
+# Contact
+## Email
+If for any reason the program does not work because of the API key, please contact me at `frankbbg4@gmail.com` and I will provide you with a new key.
+
+# Credits
+- [OpenAI](https://openai.com/)
+- [customtkinter](https://github.com/TomSchimansky/CustomTkinter)
